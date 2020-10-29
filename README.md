@@ -3,7 +3,24 @@ vdfuse
 
 Virtualbox VDI files fuse mount tool. From https://sourceforge.net/projects/xspect3d/files/gordstuff/
 
-My goal is to get it compatible to the newest virtualbox version and add some features. Maybe it can be push to virtualbox repository sooner or later.
+This repository is forked from https://github.com/Thorsten-Sick/vdfuse, with modifications based on https://serverfault.com/a/1000645, plus instructions for manually modifying the VirtualBox headers to compile on MacOS Catalina.
+
+Building for Mac
+================
+
+1. Install the latest [FUSE for macOS](https://osxfuse.github.io/). During installation ensure the "MacFUSE compatibility layer" is selected.
+2. Install the latest [VirtualBox](https://www.virtualbox.org/).
+3. Clone this repository and `cd` into the local checkout.
+4. Run `svn co -r '{20120801}' http://www.virtualbox.org/svn/vbox/trunk/include/`
+5. Modify `include/iprt/cdefs.h` and insert a new line after line 1792 containing `#undef PVM`
+6. Run `./vdbuild-osx`
+
+Mounting VHDs on Mac
+====================
+
+1. `sudo ./vdfuse -tVHD -w -f/Path/To/VHD /Path/To/Mountpoint`
+2. `hdiutil attach -imagekey diskimage-class=CRawDiskImage -nomount /Path/To/Mountpoint/PartitionN`
+3. `mount -t YourFS /dev/diskK /Path/To/ParitionMountPoint`
 
 Building
 ========

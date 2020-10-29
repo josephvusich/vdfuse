@@ -1,0 +1,20 @@
+#!/bin/bash
+
+infile=vdfuse.c
+outfile=vdfuse
+incdir="$(pwd)/include"
+INSTALL_DIR="/Applications/VirtualBox.app/Contents/MacOS"
+CFLAGS="-pipe"
+
+gcc -arch x86_64 "${infile}" \
+			"${INSTALL_DIR}"/VBoxDD.dylib \
+			"${INSTALL_DIR}"/VBoxDDU.dylib \
+			"${INSTALL_DIR}"/VBoxVMM.dylib \
+			"${INSTALL_DIR}"/VBoxRT.dylib \
+			"${INSTALL_DIR}"/VBoxDD2.dylib \
+			-o "${outfile}" \
+			-I"${incdir}" -I"/usr/local/include/osxfuse/fuse" \
+			-Wl,-rpath,"${INSTALL_DIR}"  \
+			-lfuse_ino64  \
+			-Wall ${CFLAGS}
+
